@@ -30,15 +30,11 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.externals import joblib
 
-
 logger = logging.getLogger(__name__)
-
-
 
 def make_class_dict(path):
     # Set up dict to save Xs and Ys
     driver = ogr.GetDriverByName('ESRI Shapefile')
-#    data_source = gdal.OpenEx(vector_data_path, gdal.OF_VECTOR)
     data_source = driver.Open(path, 0)
     if data_source is None:
         report_and_exit("File read failed: %s", path)
@@ -50,7 +46,7 @@ def make_class_dict(path):
     for feature in layer:
         try:
             var1 = float(feature.GetField('NFDI_mag')) 
-#   	    var2 = float(feature.GetField('NFDI_rmse'))
+   	    var2 = float(feature.GetField('NFDI_rmse'))
 	    var3 = float(feature.GetField('NFDI_sin')) 
 	    var4 = float(feature.GetField('NFDI_cos')) 
 	    var5 = float(feature.GetField('Gv_mag')) 
@@ -61,20 +57,16 @@ def make_class_dict(path):
         except:
             continue 
         class_labels.append(label)
-        #data.append([var1, var2, var3, var4, var5, var6, var7, var8])
-        data.append([var1, var3, var4, var5, var6, var7, var8])
+        data.append([var1, var2, var3, var4, var5, var6, var7, var8])
+#        data.append([var1, var3, var4, var5, var6, var7, var8])
 
     return class_labels, data
-
 
 def report_and_exit(txt, *args, **kwargs):
     logger.error(txt, *args, **kwargs)
     exit(1)
 
-
     return xys
-
-
 
 if __name__ == "__main__":
     opts = docopt(__doc__)

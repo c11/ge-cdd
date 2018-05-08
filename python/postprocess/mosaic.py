@@ -2,8 +2,9 @@
 # -*- coding: UTF-8 -*-
 """ Mosaic images using gdal merge.
 
-Usage: mosaic.py <output> <inpath> <nodata>
+Usage: mosaic.py [options] <output> <inpath> <nodata>
 
+  --reverse          reverse input list
 """
 
 import gdal
@@ -20,8 +21,10 @@ nodata = int(args['<nodata>'])
 
 file_list = glob.glob(path)
 
-files_string = " ".join(file_list)
+if args['--reverse']:
+    file_list.reverse()
 
+files_string = " ".join(file_list)
 command = "gdal_merge.py -n {a} -o {b} -of gtiff {c}".format(a=nodata,b=output,c=files_string)
 
 os.system(command)

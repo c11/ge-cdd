@@ -22,6 +22,10 @@ import yaml
 import pandas as pd
 from postprocess_utils import save_raster, sieve, raster_buffer
 
+# V10: Pre strata, post strata in both forest and nf
+# V9: Pre strata, no post strata
+# V8: Pre strata, post strata only in forest
+
 def main(inputs, opts, output):
 
     """ 
@@ -68,8 +72,6 @@ def main(inputs, opts, output):
 	possible_deg[:,:,i] = im_op.GetRasterBand(potential_band).ReadAsArray()
 
     for _y in range(dim1):
-#	if _y != 3000:
-#	    continue
 	for _x in range(dim2):
 	    # Get all years data
 	    data = stratas[_y,_x,:]
@@ -134,10 +136,13 @@ def main(inputs, opts, output):
 
     # Buffer deforestation
     def_buffer_strata = raster_buffer(inputs[0], defor_strata, dist=buffer_distance)
-    def_buffer_indices = np.where((def_buffer_strata > 0) & (strata <= 2))
+    def_buffer_indices = np.where((def_buffer_strata > 0) & (strata < 3) & (strata > 0))
 
     for i in range(len(inputs)):
         # Possible dist in stable
+        #pos_deg = np.where((possible_deg[:,:,i] == 1) & (strata < 3) & (strata > 0))
+
+	# Possible dist in forest
         pos_deg = np.where((possible_deg[:,:,i] == 1) & (strata == 1))
 	strata[pos_deg] = 5
 

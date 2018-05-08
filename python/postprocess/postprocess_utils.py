@@ -58,6 +58,7 @@ def add_potential_change(deg_mag, input, config):
     dist_ar[:,:][bad_indices] = 0
 
     #Potential disturbance withinin forest 
+    # Post strata
     dist_indices = np.where(dist_ar > 0)
     dist_ar[dist_indices] = 1
 

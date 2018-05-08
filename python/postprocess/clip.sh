@@ -1,7 +1,7 @@
 #!/bin/bash
 #$ -V
 #$ -l h_rt=24:00:00
-#$ -N Subsets
+#$ -N clip_6_or_10
 #$ -j y
 
 module load batch_landsat/v4
